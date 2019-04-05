@@ -79,7 +79,7 @@ codepath = [basepath 'OneDrive - The Pennsylvania State University\Projects\ACT-
  
 %% Settings
 flag_debug = false; % Creates additional plots for debugging purposes 
-set(0,'DefaultFigureVisible','off'); % create figures, but do not display if set to 'off'
+set(0,'DefaultFigureVisible','on'); % create figures, but do not display if set to 'off'
 
 DataPath.NC =  [basepath 'OneDrive - The Pennsylvania State University\Projects\ACT-America\Data\ACT_merge_share\current_version\'];
 %DataPath.NC =  [codepath '\In\'] ; % Or any other path to netCDF files 
@@ -90,7 +90,7 @@ mkdir(Dir.Out)
 FlagIsProf = [1 2 3 4 5 7];
 
 % Code will run between Start- and EndDate 
-StartDate = '2016-07-11';
+StartDate = '2017-02-17';
 EndDate   = '2018-08-31';
 
 % Algorithm to calculate ManeuverFlag
@@ -101,6 +101,7 @@ EndDate   = '2018-08-31';
 % an intrinsic physical meaning. 
 
 threshold_ground = 25    ; % plane is considered on ground if Altitude agl is below (unit: m) 
+threshold_landing = 375  ; % constraint on landing sequence
 threshold_leg    = 300/5 ; % number of datapoints needed for a leg to be valid (5 minutes of flight time at present)
 threshold_climb  = 5   ;   % minimum change in altitude needed for profile (unit: m), corresponds to 1 m/s at timsetp 5s
 threshold_prof   = 500 ;   % minimum altitude difference (unit: m) needed for valid profile
@@ -280,6 +281,7 @@ for i = 1:length(FlagChange)-1
             if p == length(ChangePoints)-1 && (MF(iee) == 0 | FlagChange(i+1) == length(MF))
                 % 4d) Landing 
                 MF(is:ie)=7 ;
+            
             else              
                 % ensure that heading rotates by 360; 
                 % Each sector has to be present in profile
@@ -426,6 +428,7 @@ for p = 1:length(FlagChange)-1
     % do something
         if unique(MF(FlagChange(p-1)+1:FlagChange(p))) == 6
             zavg = nanmean(z_AGL(FlagChange(p-1)+1:FlagChange(p)));
+            zavg = min(threshold_landing, zavg);
             if zavg<=threshold_high
                 ind = find(z_AGL(FlagChange(p-1)+1:FlagChange(p))>= zavg,1,'last');
                 MF(FlagChange(p-1)+ind:FlagChange(p)) = 7; 
@@ -585,6 +588,12 @@ if strcmp(plane,'b200')
     elseif day == datenum('2016-08-16','yyyy-mm-dd')
         MF(1796:1852)    = 7;
         MF_QC(1773:1796) = 0;
+    elseif day == datenum('2016-08-21','yyyy-mm-dd')
+        MF(6227:end)    = 7;
+        MF_QC(6227:end) = 0;        
+    elseif day == datenum('2017-02-17','yyyy-mm-dd')
+        MF(4491:4522)    = 7;
+        MF_QC(4491:4522) = 0;    
     elseif day == datenum('2017-11-03','yyyy-mm-dd')
         MF(1319:1368)    = 3;
         MF(1463:1496)    = 2;
