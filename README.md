@@ -9,7 +9,7 @@ This code is used to generate ManeuverFlag files for the [ACT-America](https://w
     ACT-America: L3 Merged In Situ Atmospheric Trace Gases and Flask
     Data, Eastern USA", https://doi.org/10.3334/ORNLDAAC/1593
     
-Code is provided for documentation purposes only.
+Code is in this repository is provided for documentation purposes only and will only be updated if Maneuver Flags are recalculated. 
 
 ## Explanation of Maneuver Flags 
 
