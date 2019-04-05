@@ -17,6 +17,7 @@ Maneuver Flags (MF) are assigned to give an indication of aircraft flight maneuv
 
 | MF definition | MF Value |
 |-|-|
+|plane on ground| 0| 
 |take off| 1| 
 |in-line ascent| 2| 
 |in-line descent| 3| 
