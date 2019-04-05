@@ -4,7 +4,7 @@ Author: Tobias Gerken, tug15@psu.edu
 
 Version: 1.0 (2019_04_01)
 
-This code is used to generate ManeuverFlag files for the [ACT-America](https://www-air.larc.nasa.gov/missions/ACT-America/) airborne research campaig. The data used corresponds to:
+This code is used to generate ManeuverFlag files for the [ACT-America](https://www-air.larc.nasa.gov/missions/ACT-America/) airborne research campaign. The data used corresponds to:
 
     ACT-America: L3 Merged In Situ Atmospheric Trace Gases and Flask
     Data, Eastern USA", https://doi.org/10.3334/ORNLDAAC/1593
