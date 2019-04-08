@@ -90,7 +90,7 @@ mkdir(Dir.Out)
 FlagIsProf = [1 2 3 4 5 7];
 
 % Code will run between Start- and EndDate 
-StartDate = '2017-02-17';
+StartDate = '2016-07-11';
 EndDate   = '2018-08-31';
 
 % Algorithm to calculate ManeuverFlag
