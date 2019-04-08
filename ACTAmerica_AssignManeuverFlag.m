@@ -63,26 +63,12 @@ end
 basepath = './' ; % set base of path; all paths in script are relative to this base
 codepath = [basepath 'ACTAmerica_ManeuverFlags/'] ; % add path to location of this code 
 addpath(genpath(codepath)) ; 
-% %%
- if strcmp(getenv('computername'),'DESKTOP-45CVB98')
-     addpath(genpath('C:\Users\tobia\OneDrive - The Pennsylvania State University\Projects\ACT-America\Code\GitCode'));
-     basepath = 'C:\Users\tobia\';
- elseif strcmp(getenv('computername'),'DESKTOP-A2GKIRA')
-     addpath(genpath('D:\OneDrive - The Pennsylvania State University\Projects\ACT-America\Code\GitCode'));
-     basepath = 'D:\';
- else
-     addpath(genpath('C:\Users\tug15\OneDrive - The Pennsylvania State University\Projects\ACT-America\Code\GitCode'));
-      basepath = 'C:\Users\tug15\';  
- end
 
-codepath = [basepath 'OneDrive - The Pennsylvania State University\Projects\ACT-America\Code\ACT_ManeuverFlags\'] ; % add path to location of this code  
- 
 %% Settings
 flag_debug = false; % Creates additional plots for debugging purposes 
 set(0,'DefaultFigureVisible','on'); % create figures, but do not display if set to 'off'
 
-DataPath.NC =  [basepath 'OneDrive - The Pennsylvania State University\Projects\ACT-America\Data\ACT_merge_share\current_version\'];
-%DataPath.NC =  [codepath '\In\'] ; % Or any other path to netCDF files 
+DataPath.NC =  [codepath '\In\'] ; % Or any other path to netCDF files 
 Dir.Out     =  [codepath 'Out\'] ;
 mkdir(Dir.Out)
 
@@ -91,6 +77,7 @@ FlagIsProf = [1 2 3 4 5 7];
 
 % Code will run between Start- and EndDate 
 StartDate = '2016-07-11';
+StartDate = '2018-05-16';
 EndDate   = '2018-08-31';
 
 % Algorithm to calculate ManeuverFlag
