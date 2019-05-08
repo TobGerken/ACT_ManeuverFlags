@@ -68,3 +68,11 @@ EndDate   = '2018-08-31';
 Davis, K.J., M.D. Obland, B. Lin, T. Lauvaux, C. O'dell, B. Meadows, E.V. Browell, J.H. Crawford, J.P. DiGangi, C. Sweeney, .J. McGill, J. Dobler, J.D. Barrick, and A.R. Nehrir. 2018. ACT-America: L3 Merged In Situ Atmospheric Trace Gases and Flask Data, 
 Eastern USA. ORNL DAAC, Oak Ridge, Tennessee, USA. [https://doi.org/10.3334/ORNLDAAC/1593](https://doi.org/10.3334/ORNLDAAC/1593)
  
+
+## Archive
+
+This repository is archived at [Zenodo](https://zenodo.org/). 
+<a href="https://doi.org/10.5281/zenodo.2677933"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.2677933.svg" alt="DOI"></a>
+
+Zenodo is funded by [CERN](https://home.cern) and [OpenAIRE](https://www.openaire.eu/) - a [European Union Horizon 2020](https://ec.europa.eu/programmes/horizon2020/) initaitive.
+
