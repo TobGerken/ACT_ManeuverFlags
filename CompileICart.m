@@ -14,8 +14,7 @@ startup % sets path and basedirectory
 % Loop over files 
 
 ICARTDir = './Data/ACTAMERICA_MetaDataFlags/4Campaigns/Final_R0/' ;
-ICARTSDir = {'Summer16/' , 'Winter17/', 'Fall17/', 'Spring18/'} 
-ICARTSDir = {'Winter17/', 'Fall17/', 'Spring18/'} 
+ICARTSDir = {'Summer16/', 'Winter17/', 'Fall17/', 'Spring18/'} ;
 
 OutDir = './Data/ACTAMERICA_MetaDataFlags/4Campaigns/Final_R0_New/' 
 MFDir = './Data/ACTAMERICA_ManeuverFlag/NC/'
@@ -23,7 +22,7 @@ MFDir = './Data/ACTAMERICA_ManeuverFlag/NC/'
 MFNme = 'ManeuverFlag_' ;
 MFExt = '.csv' ;
 
-nanVal  = -99999;
+nanVal  = -999999;
 
 %loop over days in campaign
 for i = ICARTSDir
@@ -35,18 +34,48 @@ for i = ICARTSDir
     for f = 1:length(fIC)
         fid = fopen([fIC(f).folder '/' fIC(f).name]);
         
+        disp(['File:'  fIC(f).name]);
+        
         % get number of lines in header
-        line = fgetl(fid);
-        C = textscan(line, '%d%d', 'delim',',');
+        clear line
+        line{1} = fgetl(fid);
+        C = textscan(line{1}, '%d%d', 'delim',',');
         
         % read and write header line by line and write to file
-        fOut = fopen([OutDir i{1} fIC(f).name], 'w');
-        fprintf(fOut,[line '\n']);
+        
+        Outname = fIC(f).name;
+        Outname=strrep(Outname, 'ACTAMERICA_flag_metadata', 'ACTAMERICA-flag-metadata');
+        fOut = fopen([OutDir i{1} Outname], 'w');
+        %fprintf(fOut,[line '\n']);
         for l = 1: C{1}-1
-            line = fgetl(fid);
-            fprintf(fOut, [line '\n']);
-        end    
-        % now read data portion of file 
+            line{l+1} = fgetl(fid);
+            %fprintf(fOut, [line '\n']);
+        end
+        
+        % Modify lines: 
+        % Line 2
+        line{2} = strrep(line{2}, 'Gerkin', 'Gerken') ;
+        % Line 10-12
+        line{10} = num2str((str2num(line{10})-1)) ;
+        dummy = strsplit(line{11},', ');
+        line{11} = strjoin(dummy(1:end-1),', ');
+        dummy = strsplit(line{12},', ');
+        line{12} = strjoin(dummy(1:end-1),', ');
+        % Select header line and replace Height with GPS_ALT
+        ll = find(contains(line, 'Start_UTC,'));
+        line{ll(end)} =  strrep(line{ll(end)}, 'Height', 'GPS_ALT');
+        % Insert Special Comment Line 
+        line = [line(1:23), {'0'}, line(24:end)] ;
+        
+        
+        C = textscan(line{1}, '%d%d', 'delim',',');
+        
+        line{1} = sprintf('%d, %d', C{1}+1, C{2});
+        
+        for ll = 1:length(line)
+            fprintf(fOut, [line{ll} '\n']);
+        end
+        % now read data portion of file
         D = textscan(fid, '%f%f%f%f%f%f%f%f', 'delim',',');      
         fclose(fid);
        
@@ -86,14 +115,20 @@ for i = ICARTSDir
         DataOut(iD,11) = MF(iMF,6);
         DataOut(iD,12) = MF(iMF,7);
         
-        % Replace missing values (-9999) with -99999 for consistency
-        DataOut(DataOut == -9999) = nanVal;
+        % Replace missing values (-99999) with -999999 for consistency in
+        % our data 
+        ind = false(size(DataOut));
+        ind(:,8:12) = (DataOut(:,8:12) < -8999);        
+        DataOut(ind) = nanVal;
         % Replace NaN with -99999 for consistency
         DataOut(isnan(DataOut)) = nanVal;
         
         % now write to file 
         for li = 1:length(DataOut)
-            fprintf(fOut, '%d, %d, %7.1f, %d, %11.8f, %12.8f, %6.4f, %d, %d, %d, %d, %d \n', DataOut(li,:)) ;
+            outstr = sprintf('%d, %d, %7.1f, %d, %11.8f, %12.8f, %6.4f, %d, %d, %d, %d, %d \n', DataOut(li,:));
+            outstr = strrep(outstr,'-9999.0000,','-999999');
+            outstr = strrep(outstr,'-999999.00000000,','-999999');
+            fprintf(fOut, outstr) ;
         end
         fclose(fOut);
     end
